@@ -1,6 +1,9 @@
 import random
 import numpy as np
-import threading
+
+# the possible moves to find all connected empty cells to the current one
+# up , up-right , right, down-right, down , down-left, left, up-left
+moves = [[-1, 0], [-1, 1], [0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1]]
 
 
 def placing_the_numbers(bombs_number_height, bombs_number_width, matrix):
@@ -40,131 +43,17 @@ def creating_the_used_matrices_behind(bombs_number_height, bombs_number_width, b
     return [matrix_user, matrix_solution]
 
 
-def checking_and_modifying_matrix_user(matrix_solution, matrix_user, col_start, col_finish, row, type_used):
-    """if type_used == 1:
-        if col_start == col_finish or row == -1:
-            print("intra si aii")
-            return
-    else:
-        if col_start == col_finish or row == len(matrix_solution):
-            print("intra si isi")
-            return
-    new_col_start = -1
-    is_full_different_zero = True
-    for item_column in range(col_start, col_finish + 1):
-        matrix_user[row][item_column] = matrix_solution[row][item_column]
-        if new_col_start == -1 and matrix_solution[row][item_column] == 0:
-            is_full_different_zero = False
-            new_col_start = item_column - 1
-        if new_col_start != -1 and matrix_solution[row][item_column] != 0:
-            print("P1")
-            print(matrix_user)
-            print("++++++++++++++++++++")
-            print(f"row is {row} start is {col_start} and finish {item_column}")
-            print("----------------")
-            if type_used == 1:
-                checking_and_modifying_matrix_user(matrix_solution, matrix_user, new_col_start, item_column, row - 1,
-                                                   type_used)
-
-            else:
-                checking_and_modifying_matrix_user(matrix_solution, matrix_user, new_col_start, item_column, row + 1,
-                                                   type_used)
-            new_col_start = -1
-
-    if is_full_different_zero:
-        return
-
-    finished_row = False
-    if matrix_solution[row][col_finish] == 0:
-        for item_column in range(col_finish + 1, len(matrix_solution[0])):
-            if matrix_solution[row][col_finish] == 0:
-                matrix_user[row][item_column] = 0
-            else:
-                matrix_user[row][item_column] = matrix_solution[row][item_column]
-                print("P2")
-                print(matrix_user)
-                print("++++++++++++++++++++")
-
-                print(f"row is {row} start is {col_start} and finish {item_column}")
-                print("----------------")
-                if type_used == 1:
-                    checking_and_modifying_matrix_user(matrix_solution, matrix_user, new_col_start, item_column,
-                                                       row - 1,
-                                                       type_used)
-                else:
-                    checking_and_modifying_matrix_user(matrix_solution, matrix_user, new_col_start, item_column,
-                                                       row + 1,
-                                                       type_used)
-
-                finished_row = True
-    if not finished_row:
-        print("P3")
-        print(matrix_user)
-        print("++++++++++++++++++++")
-
-        print(f"row is {row} start is {col_start} and finish {len(matrix_solution[0]) - 1}")
-        print("----------------")
-        if type_used == 1:
-            checking_and_modifying_matrix_user(matrix_solution, matrix_user, new_col_start, len(matrix_solution[0]) - 1,
-                                               row - 1,
-                                               type_used)
-        else:
-            checking_and_modifying_matrix_user(matrix_solution, matrix_user, new_col_start, len(matrix_solution[0]) - 1,
-                                               row + 1,
-                                               type_used)"""
-    # ITERATIVE MODE
-    """checking_and_modifying_matrix_user(matrix_solution, matrix_user, new_col_start, len(matrix_solution[0]) - 1,
-                                           row, type_used)"""
-
-    """if not see_zero and matrix_solution[row][item_column] == 0:
-        see_zero = True
-    matrix_user[row][item_column] = matrix_solution[row][item_column]
-    if see_zero and new_col_finish == col_finish and matrix_solution[row][item_column] != 0:
-        new_col_finish = item_column
-
-if matrix_solution[row][col_finish] == 0:
-    for item_column in range(col_finish + 1, len(matrix_solution[0])):
-        if matrix_solution[row][col_finish] == 0:
-            matrix_user[row][item_column] = 0
-        else:
-            matrix_user[row][item_column] = matrix_solution[row][item_column]
-            new_col_finish = item_column
-            break"""
-
-    # print(new_col_start)
-    print("hey")
-
-
-"""def thread_above_row(matrix_solution, matrix_user, col_start, col_finish, row):  # type 1
-    if col_start == col_finish or row == -1:
-        return
-    checking_and_modifying_matrix_user(matrix_solution, matrix_user, col_start,
-                                       col_finish, row, 1)
-
-
-def thread_below_row(matrix_solution, matrix_user, col_start, col_finish, row):  # type 2
-    if col_start == col_finish or row == len(matrix_solution):
-        return
-    checking_and_modifying_matrix_user(matrix_solution, matrix_user, col_start,
-                                       col_finish, row + 1, 2)"""
-
-moves = [[-1, 0], [-1, 1], [0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1]]
-
-
 def getting_empty_space_solution(matrix_solution, matrix_user, stack_zeros, row_len, col_len):
-    # not taking into consideration the clicked zone
+    # not taking into consideration the initial clicked zone
+
+    # if stack is 0 -> we found all cells that must be shown to the user
     if len(stack_zeros) < 1:
         return
 
-    print(np.array(matrix_user))
-    print("++++++++++++++++++++++++")
     for move in moves:
         (current_row, current_column) = np.array(move) + stack_zeros[-1]
         if 0 <= current_row < row_len and 0 <= current_column < col_len:
-            print(move, current_row, current_column)
-            print("--------------")
             if matrix_solution[current_row][current_column] == 0 and matrix_user[current_row][current_column] == -2:
-                print("Intra?")
                 matrix_user[current_row][current_column] = 0
                 stack_zeros.append([current_row, current_column])
                 getting_empty_space_solution(matrix_solution, matrix_user, stack_zeros, row_len, col_len)
@@ -172,54 +61,10 @@ def getting_empty_space_solution(matrix_solution, matrix_user, stack_zeros, row_
                 matrix_user[current_row][current_column] = matrix_solution[current_row][current_column]
     stack_zeros.pop()
 
-    """col_start = 0
-    col_finish = len(matrix_solution[0]) - 1
-    for item_column in range(clicked_column - 1, -1, -1):
-        if matrix_solution[clicked_row][item_column] == 0:
-            matrix_user[clicked_row][item_column] = 0
-        else:
-            matrix_user[clicked_row][item_column] = matrix_solution[clicked_row][item_column]
-            col_start = item_column
-            break
-    for item_column in range(clicked_column + 1, len(matrix_solution[0])):
-        if matrix_solution[clicked_row][item_column] == 0:
-            matrix_user[clicked_row][item_column] = 0
-        else:
-            matrix_user[clicked_row][item_column] = matrix_solution[clicked_row][item_column]
-            col_finish = item_column
-            break"""
-    """thread_above_row(matrix_solution, matrix_user, col_start, col_finish, clicked_row)
-    thread_below_row(matrix_solution, matrix_user, col_start, col_finish, clicked_row)"""
-
-    print(np.array(matrix_user))
-
 
 """[user, solution] = creating_the_used_matrices_behind(10, 5, 10)
 print(solution)"""
 """getting_empty_space_solution(
-    [[0, 0, 0, 0, 0, 2, -1, 3, 1, 1],
-     [0, 0, 0, 0, 0, 2, -1, 3, -1, 1],
-     [0, 0, 0, 0, 0, 2, 2, 3, 1, 1],
-     [0, 1, 1, 1, 0, 1, -1, 2, 1, 0],
-     [0, 1, -1, 1, 1, 2, 3, -1, 1, 0],
-     [0, 1, 1, 1, 1, -1, 2, 2, 3, 2],
-     [0, 0, 0, 0, 1, 1, 1, 1, -1, -1],
-     [1, 1, 0, 0, 0, 0, 0, 1, 2, 2],
-     [-1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-     [1, 1, 0, 0, 0, 0, 0, 0, 0, 0]],
-    [[-2, -2, -2, -2, -2, -2, -2, -2, -2, -2],
-     [-2, -2, -2, -2, -2, -2, -2, -2, -2, -2],
-     [-2, -2, -2, -2, -2, -2, -2, -2, -2, -2],
-     [-2, -2, -2, -2, -2, -2, -2, -2, -2, -2],
-     [-2, -2, -2, -2, -2, -2, -2, -2, -2, -2],
-     [-2, -2, -2, -2, -2, -2, -2, -2, -2, -2],
-     [-2, -2, -2, -2, -2, -2, -2, -2, -2, -2],
-     [-2, -2, -2, -2, -2, -2, -2, -2, -2, -2],
-     [-2, -2, -2, -2, -2, -2, -2, -2, -2, -2],
-     [-2, -2, -2, -2, -2, -2, -2, -2, -2, -2]],
-    [[0, 0]], 10, 10
-)"""
-getting_empty_space_solution(
     [[0, 1, 1, 1, 0, 0, 0, 0, 0, 0],
      [0, 1, -1, 2, 1, 0, 1, 1, 1, 0],
      [1, 2, 2, -1, 2, 1, 1, -1, 1, 0],
@@ -240,5 +85,5 @@ getting_empty_space_solution(
      [-2, -2, -2, -2, -2, -2, -2, -2, -2, -2],
      [-2, -2, -2, -2, -2, -2, -2, -2, -2, -2],
      [-2, -2, -2, -2, -2, -2, -2, -2, -2, -2]],
-    [[0, 4]],10,10
-)
+    [[0, 4]], 10, 10
+)"""

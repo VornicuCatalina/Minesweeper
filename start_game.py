@@ -148,9 +148,31 @@ def thread_below_row(matrix_solution, matrix_user, col_start, col_finish, row): 
     checking_and_modifying_matrix_user(matrix_solution, matrix_user, col_start,
                                        col_finish, row + 1, 2)"""
 
+moves = [[-1, 0], [-1, 1], [0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1]]
 
-def getting_empty_space_solution(matrix_solution, matrix_user, clicked_row, clicked_column):
-    col_start = 0
+
+def getting_empty_space_solution(matrix_solution, matrix_user, stack_zeros, row_len, col_len):
+    # not taking into consideration the clicked zone
+    if len(stack_zeros) < 1:
+        return
+
+    print(np.array(matrix_user))
+    print("++++++++++++++++++++++++")
+    for move in moves:
+        (current_row, current_column) = np.array(move) + stack_zeros[-1]
+        if 0 <= current_row < row_len and 0 <= current_column < col_len:
+            print(move, current_row, current_column)
+            print("--------------")
+            if matrix_solution[current_row][current_column] == 0 and matrix_user[current_row][current_column] == -2:
+                print("Intra?")
+                matrix_user[current_row][current_column] = 0
+                stack_zeros.append([current_row, current_column])
+                getting_empty_space_solution(matrix_solution, matrix_user, stack_zeros, row_len, col_len)
+            elif matrix_user[current_row][current_column] == -2:
+                matrix_user[current_row][current_column] = matrix_solution[current_row][current_column]
+    stack_zeros.pop()
+
+    """col_start = 0
     col_finish = len(matrix_solution[0]) - 1
     for item_column in range(clicked_column - 1, -1, -1):
         if matrix_solution[clicked_row][item_column] == 0:
@@ -165,15 +187,15 @@ def getting_empty_space_solution(matrix_solution, matrix_user, clicked_row, clic
         else:
             matrix_user[clicked_row][item_column] = matrix_solution[clicked_row][item_column]
             col_finish = item_column
-            break
+            break"""
     """thread_above_row(matrix_solution, matrix_user, col_start, col_finish, clicked_row)
     thread_below_row(matrix_solution, matrix_user, col_start, col_finish, clicked_row)"""
 
     print(np.array(matrix_user))
 
 
-[user, solution] = creating_the_used_matrices_behind(10, 5, 10)
-print(solution)
+"""[user, solution] = creating_the_used_matrices_behind(10, 5, 10)
+print(solution)"""
 """getting_empty_space_solution(
     [[0, 0, 0, 0, 0, 2, -1, 3, 1, 1],
      [0, 0, 0, 0, 0, 2, -1, 3, -1, 1],
@@ -185,7 +207,7 @@ print(solution)
      [1, 1, 0, 0, 0, 0, 0, 1, 2, 2],
      [-1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
      [1, 1, 0, 0, 0, 0, 0, 0, 0, 0]],
-[[-2, -2, -2, -2, -2, -2, -2, -2, -2, -2],
+    [[-2, -2, -2, -2, -2, -2, -2, -2, -2, -2],
      [-2, -2, -2, -2, -2, -2, -2, -2, -2, -2],
      [-2, -2, -2, -2, -2, -2, -2, -2, -2, -2],
      [-2, -2, -2, -2, -2, -2, -2, -2, -2, -2],
@@ -195,9 +217,9 @@ print(solution)
      [-2, -2, -2, -2, -2, -2, -2, -2, -2, -2],
      [-2, -2, -2, -2, -2, -2, -2, -2, -2, -2],
      [-2, -2, -2, -2, -2, -2, -2, -2, -2, -2]],
-    0,0
+    [[0, 0]], 10, 10
 )"""
-"""getting_empty_space_solution(
+getting_empty_space_solution(
     [[0, 1, 1, 1, 0, 0, 0, 0, 0, 0],
      [0, 1, -1, 2, 1, 0, 1, 1, 1, 0],
      [1, 2, 2, -1, 2, 1, 1, -1, 1, 0],
@@ -218,6 +240,5 @@ print(solution)
      [-2, -2, -2, -2, -2, -2, -2, -2, -2, -2],
      [-2, -2, -2, -2, -2, -2, -2, -2, -2, -2],
      [-2, -2, -2, -2, -2, -2, -2, -2, -2, -2]],
-    0, 4
+    [[0, 4]],10,10
 )
-"""

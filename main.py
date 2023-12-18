@@ -1,21 +1,6 @@
-import global_variables_file
 import tkinter as tk
-
-# the root of the project aka the window
-root = tk.Tk()
-# Set the window title to "Minesweeper"
-root.title("Minesweeper")
-
-
-def get_window_size():
-    global_variables_file.window_height = root.winfo_screenheight()
-    global_variables_file.window_width = root.winfo_screenwidth()
-
-    # Set the window size to match the screen size
-    root.geometry(f"{global_variables_file.window_width}x{global_variables_file.window_height}")
-
-    # modifying the icon
-    root.iconbitmap("./pictures/icon_game.ico")
+import global_variables_file
+from global_variables_file import root
 
 
 def on_start():
@@ -23,14 +8,20 @@ def on_start():
 
 
 def on_settings():
-    print("The settings come")
+    global_variables_file.clear_widgets()
+    options()
 
 
 def on_exit():
-    print("Exiting the application")
     root.destroy()
 
 
+def back_on_menu():
+    global_variables_file.clear_widgets()
+    creating_the_menu()
+
+
+# menu
 def creating_the_menu():
     # Add a label to the window
     button_start = tk.Button(root, text="Start", relief=tk.FLAT, cursor="hand2", command=on_start)
@@ -44,14 +35,55 @@ def creating_the_menu():
 
 
 def main_prog():
-    get_window_size()
+    global_variables_file.get_window_size()
     creating_the_menu()
-    root.mainloop()
+
+
+# settings
+def options():
+    settings_label = tk.Label(root, text="SETTINGS")
+    settings_label.grid(row=0, sticky="ew")
+
+    # height
+    height_label = tk.Label(root, text=f"Current height number = {global_variables_file.height}")
+    height_label.grid(row=1, column=0, sticky="w")
+    height_entry = tk.Entry(root)
+    height_entry.grid(row=1, column=1)
+
+    # width
+    width_label = tk.Label(root, text=f"Width number = {global_variables_file.width}")
+    width_label.grid(row=2, column=0, sticky="w")
+    width_entry = tk.Entry(root)
+    width_entry.grid(row=2, column=1)
+
+    # bombs
+    number_bombs_label = tk.Label(root, text=f"Bombs number = {global_variables_file.number_bombs}")
+    number_bombs_label.grid(row=3, column=0, sticky="w")
+    number_bombs_entry = tk.Entry(root)
+    number_bombs_entry.grid(row=3, column=1)
+
+    # time
+    time_seconds_label = tk.Label(root, text=f"Time = {global_variables_file.time_seconds}")
+    time_seconds_label.grid(row=4, column=0, sticky="w")
+    time_seconds_entry = tk.Entry(root)
+    time_seconds_entry.grid(row=4, column=1)
+
+    # Create a button to get back to the menu
+    back_button = tk.Button(root, text="Back", command=back_on_menu)
+    back_button.grid(row=5, column=0, columnspan=2)
+
+    # Create a button to update the label
+    update_button = tk.Button(root, text="Update",
+                              command=lambda: global_variables_file.update_label(height_entry, height_label,
+                                                                                 width_entry, width_label,
+                                                                                 number_bombs_entry, number_bombs_label,
+                                                                                 time_seconds_entry,
+                                                                                 time_seconds_label))
+    update_button.grid(row=5, column=3, columnspan=2)
 
 
 main_prog()
-# click on start
+root.mainloop()
 
-# click on settings
+# logic functions
 
-# click on exit

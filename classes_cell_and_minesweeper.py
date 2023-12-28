@@ -4,7 +4,9 @@ import thread_time
 import start_game
 
 
+# the cell in the minesweeper game
 class Cell:
+    # class_attached_to = the main class that connects them as a matrix
     def __init__(self, root, row, column, class_attached_to):
         self.root = root
         self.row = row
@@ -16,6 +18,7 @@ class Cell:
 
         self.class_attached_to = class_attached_to
 
+    # when the cell is clicked
     def click(self):
         if thread_time.winning_or_losing == 0:
             # we have the flag on
@@ -26,14 +29,19 @@ class Cell:
                 self.bomb_function()
             # after each click -> checking winning case
             self.class_attached_to.check_winning_game()
+        elif thread_time.time_seconds_for_this_game == 0:
+            self.class_attached_to.show_solution()
 
     def flag_function(self):
+        # if the cell is already shown to the user
         if not self.is_revealed:
+            # if it has a flag on
             if self.flag:
                 self.flag = False
                 self.button.config(bg="grey")
                 # back to unknown cell
                 self.class_attached_to.user[self.row][self.column] = -2
+            # otherwise
             else:
                 self.flag = True
                 self.button.config(bg="red")
@@ -46,7 +54,8 @@ class Cell:
             # we have a bomb
             if self.class_attached_to.solution[self.row][self.column] == -1:
                 self.class_attached_to.game_ended(False)
-                # when losing, showing the solution to the user :D, but later
+                # showing the correct solution to the user
+                self.class_attached_to.show_solution()
             # is a number
             elif self.class_attached_to.solution[self.row][self.column] > 0:
                 self.is_revealed = True
@@ -66,10 +75,11 @@ class Minesweeper:
         self.cols = global_variables_file.width
         self.cells = [[Cell(root, i, j, self) for j in range(self.cols)] for i in range(self.rows)]
         self.solution = solution
-        print(self.solution)
         self.user = user
 
-    def game_ended(self, condition: bool):
+    # if the player won or lost
+    @staticmethod
+    def game_ended(condition: bool):
         if condition:
             print("won the game")
             thread_time.winning_or_losing = 1
@@ -77,14 +87,17 @@ class Minesweeper:
             print("lost the game")
             thread_time.winning_or_losing = -1
 
+    # calls the function to show neighbors in user matrix
     def showing_neighbors(self, row, col):
         start_game.getting_empty_space_solution(self.solution, self.user, [[row, col]], self.rows, self.cols)
+        # then shows this graphically
         for row in self.cells:
             for cell in row:
                 if self.user[cell.row][cell.column] > -1:
                     cell.button.config(text=self.user[cell.row][cell.column], bg='white')
                     cell.is_revealed = True
 
+    # checks if the matrices are identical user & solution
     def check_winning_game(self):
         is_finished = True
         for row in range(self.rows):
@@ -95,3 +108,20 @@ class Minesweeper:
                 break
         if is_finished:
             self.game_ended(True)
+
+    # showing the correct solution if the player loses
+    def show_solution(self):
+        for rows in self.cells:
+            for cell in rows:
+                row = cell.row
+                col = cell.column
+                if self.user[row][col] != self.solution[row][col]:
+                    # should have flagged it as a bomb
+                    if self.solution[row][col] == -1:
+                        cell.button.config(text='B', bg='red')
+                    # flagged it as a bomb when it is not
+                    elif self.user[row][col] == -1:
+                        cell.button.config(text='X', bg='orange')
+                    # shows the rest
+                    else:
+                        cell.button.config(text=self.solution[row][col], bg='yellow')

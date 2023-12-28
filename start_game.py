@@ -54,42 +54,18 @@ def getting_empty_space_solution(matrix_solution, matrix_user, stack_zeros, row_
     for move in moves:
         (current_row, current_column) = np.array(move) + stack_zeros[-1]
         if 0 <= current_row < row_len and 0 <= current_column < col_len:
+            # if it is an empty space in solution & didn't get checked in user matrix
             if matrix_solution[current_row][current_column] == 0 and matrix_user[current_row][current_column] == -2:
                 matrix_user[current_row][current_column] = 0
                 stack_zeros.append([current_row, current_column])
                 getting_empty_space_solution(matrix_solution, matrix_user, stack_zeros, row_len, col_len)
+            # this is for the barriers
             elif matrix_user[current_row][current_column] == -2:
                 matrix_user[current_row][current_column] = matrix_solution[current_row][current_column]
     stack_zeros.pop()
 
 
-"""[user, solution] = creating_the_used_matrices_behind(10, 5, 10)
-print(solution)"""
-"""getting_empty_space_solution(
-    [[0, 1, 1, 1, 0, 0, 0, 0, 0, 0],
-     [0, 1, -1, 2, 1, 0, 1, 1, 1, 0],
-     [1, 2, 2, -1, 2, 1, 1, -1, 1, 0],
-     [-1, 1, 1, 2, -1, 1, 2, 2, 2, 0],
-     [1, 1, 1, 2, 2, 1, 1, -1, 1, 0],
-     [0, 0, 1, -1, 1, 0, 1, 1, 1, 0],
-     [0, 0, 1, 1, 1, 1, 1, 1, 0, 0],
-     [0, 0, 0, 0, 0, 1, -1, 2, 1, 0],
-     [0, 0, 0, 0, 0, 1, 2, -1, 2, 1],
-     [0, 0, 0, 0, 0, 0, 1, 1, 2, -1]],
-    [[-2, -2, -2, -2, -2, -2, -2, -2, -2, -2],
-     [-2, -2, -2, -2, -2, -2, -2, -2, -2, -2],
-     [-2, -2, -2, -2, -2, -2, -2, -2, -2, -2],
-     [-2, -2, -2, -2, -2, -2, -2, -2, -2, -2],
-     [-2, -2, -2, -2, -2, -2, -2, -2, -2, -2],
-     [-2, -2, -2, -2, -2, -2, -2, -2, -2, -2],
-     [-2, -2, -2, -2, -2, -2, -2, -2, -2, -2],
-     [-2, -2, -2, -2, -2, -2, -2, -2, -2, -2],
-     [-2, -2, -2, -2, -2, -2, -2, -2, -2, -2],
-     [-2, -2, -2, -2, -2, -2, -2, -2, -2, -2]],
-    [[0, 4]], 10, 10
-)"""
-
-
+# changes the used method of finding the solution
 def change_is_bomb(is_bomb: bool, bomb, flag):
     global_variables_file.is_looking_for_bombs = is_bomb
 
@@ -99,4 +75,3 @@ def change_is_bomb(is_bomb: bool, bomb, flag):
     else:
         bomb.config(bg="grey")
         flag.config(bg="orange")
-

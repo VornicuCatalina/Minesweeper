@@ -1,4 +1,5 @@
 import tkinter as tk
+import random
 
 # global variables used in the whole project
 # the game will use the default values in case that they will not be modified
@@ -69,8 +70,8 @@ def update_label(height_entry, height_label, width_entry, width_label, bombs_ent
         current_var = bombs_entry.get()
         current_var_int = int(current_var)
         number_bombs = current_var_int
-        if number_bombs > height * width:
-            number_bombs = 3 * height * width // 4
+        if number_bombs > height * width or number_bombs < 1:
+            number_bombs = random.randint(height * width // 4, 3 * height * width // 4)
         bombs_label.config(text=f"Bombs number = {number_bombs}")
     except ValueError:
         print("An invalid type for number of bombs")
@@ -79,7 +80,7 @@ def update_label(height_entry, height_label, width_entry, width_label, bombs_ent
         current_var = time_entry.get()
         current_var_int = int(current_var)
         time_seconds = current_var_int
-        if 1800 < time_seconds or time_seconds < 10:
+        if 1800 > time_seconds or time_seconds < 10:
             time_label.config(text=f"Time = {time_seconds}")
         else:
             print("Not accepted number seconds value")

@@ -6,6 +6,7 @@ import start_game
 import classes_cell_and_minesweeper
 
 
+# functions for buttons
 def on_start():
     global_variables_file.clear_widgets()
     playing_game()
@@ -93,6 +94,9 @@ def playing_game():
     thread_time.left_the_game = False
     thread_time.winning_or_losing = 0
 
+    # default value for the buttons
+    global_variables_file.is_looking_for_bombs = True
+
     # Create a button to get back to the menu
     back_button = tk.Button(root, text="Back", command=back_on_menu)
     back_button.grid(row=0, column=0)
@@ -111,15 +115,15 @@ def playing_game():
     label_time.grid(row=0, column=10, columnspan=4)
     thread_time.calling_the_thread_for_time(label_time, root)
 
-    # creating the game
+    # creating the matrices : solution & user
     [user, solution] = start_game.creating_the_used_matrices_behind(global_variables_file.height,
                                                                     global_variables_file.width,
                                                                     global_variables_file.number_bombs)
 
+    # initialising the cells
     _ = classes_cell_and_minesweeper.Minesweeper(root, solution, user)
 
 
+# main program
 main_prog()
 root.mainloop()
-
-# logic functions

@@ -1,5 +1,6 @@
 import random
 import numpy as np
+import global_variables_file
 
 # the possible moves to find all connected empty cells to the current one
 # up , up-right , right, down-right, down , down-left, left, up-left
@@ -87,3 +88,7 @@ print(solution)"""
      [-2, -2, -2, -2, -2, -2, -2, -2, -2, -2]],
     [[0, 4]], 10, 10
 )"""
+
+
+def change_is_bomb(is_bomb: bool):
+    global_variables_file.is_looking_for_bombs = is_bomb

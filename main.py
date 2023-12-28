@@ -1,10 +1,13 @@
 import tkinter as tk
 import global_variables_file
+import thread_time
 from global_variables_file import root
+import start_game
 
 
 def on_start():
-    print("Starting a new game!")
+    global_variables_file.clear_widgets()
+    playing_game()
 
 
 def on_settings():
@@ -18,6 +21,7 @@ def on_exit():
 
 def back_on_menu():
     global_variables_file.clear_widgets()
+    thread_time.left_the_game = True
     creating_the_menu()
 
 
@@ -82,8 +86,27 @@ def options():
     update_button.grid(row=5, column=3, columnspan=2)
 
 
+# the game
+def playing_game():
+    thread_time.left_the_game = False
+    # Create a button to get back to the menu
+    back_button = tk.Button(root, text="Back", command=back_on_menu)
+    back_button.grid(row=0, column=0)
+
+    # buttons for checking one of the 2 options: bombs or putting flags
+    bomb_button = tk.Button(root, text="Choose bomb", command=lambda: start_game.change_is_bomb(True))
+    bomb_button.grid(row=0, column=1)
+
+    flag_button = tk.Button(root, text="Choose flag", command=lambda: start_game.change_is_bomb(False))
+    flag_button.grid(row=0, column=2)
+
+    # the timer for the game
+    label_time = tk.Label(root, text="")
+    label_time.grid(row=0, column=10)
+    thread_time.calling_the_thread_for_time(label_time, root)
+
+
 main_prog()
 root.mainloop()
 
 # logic functions
-

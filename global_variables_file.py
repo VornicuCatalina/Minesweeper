@@ -11,6 +11,9 @@ time_seconds = 120
 window_height = 0
 window_width = 0
 
+# the bombs will be checked first
+is_looking_for_bombs = True
+
 # the root of the project aka the window
 root = tk.Tk()
 

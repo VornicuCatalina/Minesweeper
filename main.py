@@ -95,10 +95,12 @@ def playing_game():
     back_button.grid(row=0, column=0)
 
     # buttons for checking one of the 2 options: bombs or putting flags
-    bomb_button = tk.Button(root, text="Bomb", command=lambda: start_game.change_is_bomb(True, bomb_button, flag_button), bg="orange")
+    bomb_button = tk.Button(root, text="Bomb",
+                            command=lambda: start_game.change_is_bomb(True, bomb_button, flag_button), bg="orange")
     bomb_button.grid(row=0, column=3, columnspan=3)
 
-    flag_button = tk.Button(root, text="Flag", command=lambda: start_game.change_is_bomb(False, bomb_button, flag_button), bg="grey")
+    flag_button = tk.Button(root, text="Flag",
+                            command=lambda: start_game.change_is_bomb(False, bomb_button, flag_button), bg="grey")
     flag_button.grid(row=0, column=5, columnspan=3)
 
     # the timer for the game
@@ -107,7 +109,11 @@ def playing_game():
     thread_time.calling_the_thread_for_time(label_time, root)
 
     # creating the game
-    minesweeper = classes_cell_and_minesweeper.Minesweeper(root)
+    [user, solution] = start_game.creating_the_used_matrices_behind(global_variables_file.height,
+                                                                    global_variables_file.width,
+                                                                    global_variables_file.number_bombs)
+
+    _ = classes_cell_and_minesweeper.Minesweeper(root, solution, user)
 
 
 main_prog()

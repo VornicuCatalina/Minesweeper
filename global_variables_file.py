@@ -47,7 +47,10 @@ def update_label(height_entry, height_label, width_entry, width_label, bombs_ent
         current_var = height_entry.get()
         current_var_int = int(current_var)
         height = current_var_int
-        height_label.config(text=f"Current height number = {height}")
+        if 30 > height > 2:
+            height_label.config(text=f"Height number = {height}")
+        else:
+            print("Not an accepted height")
     except ValueError:
         print("An invalid type for height")
 
@@ -55,7 +58,10 @@ def update_label(height_entry, height_label, width_entry, width_label, bombs_ent
         current_var = width_entry.get()
         current_var_int = int(current_var)
         width = current_var_int
-        width_label.config(text=f"Width number = {width}")
+        if 45 > width > 2:
+            width_label.config(text=f"Width number = {width}")
+        else:
+            print("Not an accepted width")
     except ValueError:
         print("An invalid type for width")
 
@@ -63,6 +69,8 @@ def update_label(height_entry, height_label, width_entry, width_label, bombs_ent
         current_var = bombs_entry.get()
         current_var_int = int(current_var)
         number_bombs = current_var_int
+        if number_bombs > height * width:
+            number_bombs = 3 * height * width // 4
         bombs_label.config(text=f"Bombs number = {number_bombs}")
     except ValueError:
         print("An invalid type for number of bombs")
@@ -71,6 +79,9 @@ def update_label(height_entry, height_label, width_entry, width_label, bombs_ent
         current_var = time_entry.get()
         current_var_int = int(current_var)
         time_seconds = current_var_int
-        time_label.config(text=f"Time = {time_seconds}")
+        if 1800 < time_seconds or time_seconds < 10:
+            time_label.config(text=f"Time = {time_seconds}")
+        else:
+            print("Not accepted number seconds value")
     except ValueError:
         print("An invalid type for chronometer")

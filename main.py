@@ -50,7 +50,7 @@ def options():
     settings_label.grid(row=0, sticky="ew")
 
     # height
-    height_label = tk.Label(root, text=f"Current height number = {global_variables_file.height}")
+    height_label = tk.Label(root, text=f"Height number = {global_variables_file.height}")
     height_label.grid(row=1, column=0, sticky="w")
     height_entry = tk.Entry(root)
     height_entry.grid(row=1, column=1)
@@ -100,11 +100,11 @@ def playing_game():
     # buttons for checking one of the 2 options: bombs or putting flags
     bomb_button = tk.Button(root, text="Bomb",
                             command=lambda: start_game.change_is_bomb(True, bomb_button, flag_button), bg="orange")
-    bomb_button.grid(row=0, column=3, columnspan=3)
+    bomb_button.grid(row=0, column=3, columnspan=2)
 
     flag_button = tk.Button(root, text="Flag",
                             command=lambda: start_game.change_is_bomb(False, bomb_button, flag_button), bg="grey")
-    flag_button.grid(row=0, column=5, columnspan=3)
+    flag_button.grid(row=0, column=5, columnspan=2)
 
     # the timer for the game
     label_time = tk.Label(root, text="")

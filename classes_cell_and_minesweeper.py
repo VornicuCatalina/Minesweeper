@@ -17,12 +17,15 @@ class Cell:
         self.class_attached_to = class_attached_to
 
     def click(self):
-        # we have the flag on
-        if not global_variables_file.is_looking_for_bombs:
-            self.flag_function()
-        # we work with bombs
-        else:
-            self.bomb_function()
+        if thread_time.winning_or_losing == 0:
+            # we have the flag on
+            if not global_variables_file.is_looking_for_bombs:
+                self.flag_function()
+            # we work with bombs
+            else:
+                self.bomb_function()
+            # after each click -> checking winning case
+            self.class_attached_to.check_winning_game()
 
     def flag_function(self):
         if not self.is_revealed:
@@ -69,8 +72,10 @@ class Minesweeper:
     def game_ended(self, condition: bool):
         if condition:
             print("won the game")
+            thread_time.winning_or_losing = 1
         else:
             print("lost the game")
+            thread_time.winning_or_losing = -1
 
     def showing_neighbors(self, row, col):
         start_game.getting_empty_space_solution(self.solution, self.user, [[row, col]], self.rows, self.cols)
@@ -79,3 +84,14 @@ class Minesweeper:
                 if self.user[cell.row][cell.column] > -1:
                     cell.button.config(text=self.user[cell.row][cell.column], bg='white')
                     cell.is_revealed = True
+
+    def check_winning_game(self):
+        is_finished = True
+        for row in range(self.rows):
+            for col in range(self.cols):
+                if self.user[row][col] != self.solution[row][col]:
+                    is_finished = False
+            if not is_finished:
+                break
+        if is_finished:
+            self.game_ended(True)

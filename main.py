@@ -89,7 +89,10 @@ def options():
 
 # the game
 def playing_game():
+    # returning to default values used in the thread
     thread_time.left_the_game = False
+    thread_time.winning_or_losing = 0
+
     # Create a button to get back to the menu
     back_button = tk.Button(root, text="Back", command=back_on_menu)
     back_button.grid(row=0, column=0)
@@ -105,7 +108,7 @@ def playing_game():
 
     # the timer for the game
     label_time = tk.Label(root, text="")
-    label_time.grid(row=0, column=10, columnspan=3)
+    label_time.grid(row=0, column=10, columnspan=4)
     thread_time.calling_the_thread_for_time(label_time, root)
 
     # creating the game

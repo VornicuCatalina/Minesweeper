@@ -3,6 +3,7 @@ import global_variables_file
 import thread_time
 from global_variables_file import root
 import start_game
+import classes_cell_and_minesweeper
 
 
 def on_start():
@@ -94,16 +95,19 @@ def playing_game():
     back_button.grid(row=0, column=0)
 
     # buttons for checking one of the 2 options: bombs or putting flags
-    bomb_button = tk.Button(root, text="Choose bomb", command=lambda: start_game.change_is_bomb(True))
-    bomb_button.grid(row=0, column=1)
+    bomb_button = tk.Button(root, text="Bomb", command=lambda: start_game.change_is_bomb(True, bomb_button, flag_button), bg="orange")
+    bomb_button.grid(row=0, column=3, columnspan=3)
 
-    flag_button = tk.Button(root, text="Choose flag", command=lambda: start_game.change_is_bomb(False))
-    flag_button.grid(row=0, column=2)
+    flag_button = tk.Button(root, text="Flag", command=lambda: start_game.change_is_bomb(False, bomb_button, flag_button), bg="grey")
+    flag_button.grid(row=0, column=5, columnspan=3)
 
     # the timer for the game
     label_time = tk.Label(root, text="")
-    label_time.grid(row=0, column=10)
+    label_time.grid(row=0, column=10, columnspan=3)
     thread_time.calling_the_thread_for_time(label_time, root)
+
+    # creating the game
+    minesweeper = classes_cell_and_minesweeper.Minesweeper(root)
 
 
 main_prog()

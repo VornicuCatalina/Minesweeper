@@ -25,6 +25,8 @@ def counting_down_time(used_label):
         used_label.config(text=str(show_time))
         time.sleep(1)
         time_seconds_for_this_game -= 1
+        if time_seconds_for_this_game == 0:
+            used_label.config(text="You lost!")
 
 
 def calling_the_thread_for_time(used_label, root):

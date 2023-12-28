@@ -90,5 +90,13 @@ print(solution)"""
 )"""
 
 
-def change_is_bomb(is_bomb: bool):
+def change_is_bomb(is_bomb: bool, bomb, flag):
     global_variables_file.is_looking_for_bombs = is_bomb
+
+    if is_bomb:
+        bomb.config(bg="orange")
+        flag.config(bg="grey")
+    else:
+        bomb.config(bg="grey")
+        flag.config(bg="orange")
+

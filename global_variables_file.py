@@ -47,8 +47,8 @@ def update_label(height_entry, height_label, width_entry, width_label, bombs_ent
     try:
         current_var = height_entry.get()
         current_var_int = int(current_var)
-        height = current_var_int
-        if 30 > height > 2:
+        if 30 > current_var_int > 2:
+            height = current_var_int
             height_label.config(text=f"Height number = {height}")
         else:
             print("Not an accepted height")
@@ -58,8 +58,8 @@ def update_label(height_entry, height_label, width_entry, width_label, bombs_ent
     try:
         current_var = width_entry.get()
         current_var_int = int(current_var)
-        width = current_var_int
-        if 45 > width > 2:
+        if 45 > current_var_int > 2:
+            width = current_var_int
             width_label.config(text=f"Width number = {width}")
         else:
             print("Not an accepted width")
@@ -69,18 +69,20 @@ def update_label(height_entry, height_label, width_entry, width_label, bombs_ent
     try:
         current_var = bombs_entry.get()
         current_var_int = int(current_var)
-        number_bombs = current_var_int
-        if number_bombs > height * width or number_bombs < 1:
+        if current_var_int > height * width or current_var_int < 1:
             number_bombs = random.randint(height * width // 4, 3 * height * width // 4)
-        bombs_label.config(text=f"Bombs number = {number_bombs}")
+            bombs_label.config(text=f"Bombs number = {number_bombs}")
+        elif current_var_int > 1:
+            number_bombs = current_var_int
+            bombs_label.config(text=f"Bombs number = {number_bombs}")
     except ValueError:
         print("An invalid type for number of bombs")
 
     try:
         current_var = time_entry.get()
         current_var_int = int(current_var)
-        time_seconds = current_var_int
-        if 1800 > time_seconds or time_seconds < 10:
+        if 1800 >= current_var_int > 10:
+            time_seconds = current_var_int
             time_label.config(text=f"Time = {time_seconds}")
         else:
             print("Not accepted number seconds value")

@@ -24,12 +24,22 @@ root.title("Minesweeper")
 
 # global functions
 def clear_widgets():
+    """
+    clears all the widgets of the graphical root -> so I won't reopen other windows, I will use the current one
+
+    :return: nothing(void function)
+    """
     # Destroy all widgets in the current window
     for widget in root.winfo_children():
         widget.destroy()
 
 
 def get_window_size():
+    """
+    gets the height and width of the window, so it will use the whole screen
+
+    :return: nothing (void function)
+    """
     global window_height, window_width
     window_height = root.winfo_screenheight()
     window_width = root.winfo_screenwidth()
@@ -43,6 +53,20 @@ def get_window_size():
 
 def update_label(height_entry, height_label, width_entry, width_label, bombs_entry, bombs_label, time_entry,
                  time_label):
+    """
+    This function is used in the settings windows to update what options are wanted by the user
+    If bombs less than 1 -> a random number will be displayed
+
+    :param height_entry: the value for the number of the blocks used for the height of the matrix that the user wants
+    :param height_label: the label for the number of the blocks used for the height of the matrix
+    :param width_entry: the value for the number of the blocks used for the width of the matrix that the user wants
+    :param width_label: the label for the number of the blocks used for the width of the matrix
+    :param bombs_entry: the value for the number of bombs that the user wants
+    :param bombs_label: the label for the number of bombs
+    :param time_entry: the value for time (in seconds) that the user wants
+    :param time_label: the label for time (in seconds)
+    :return: nothing (void function)
+    """
     global height, width, number_bombs, time_seconds
     try:
         current_var = height_entry.get()

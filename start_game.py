@@ -8,6 +8,18 @@ moves = [[-1, 0], [-1, 1], [0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1]]
 
 
 def placing_the_numbers(bombs_number_height, bombs_number_width, matrix):
+    """
+    It places the values of the cells that are not empty (number between 1-8)
+
+    We travel through the matrix and check if the current cell was marked as being a bomb, then all of its neighbours
+    will get a +1 (only if they are not marked as bombs) in its value as we know that the initial matrix was filled
+    with default values (0) or -1 when it is a bomb
+
+    :param bombs_number_height: the number of rows of the matrix
+    :param bombs_number_width: the number of columns of the matrix
+    :param matrix: the one used for the solution of the game
+    :return: nothing (void function)
+    """
     # looks for the bombs and then adds 1 to its neighbours
     for row in range(bombs_number_height):
         for column in range(bombs_number_width):
@@ -27,6 +39,18 @@ def placing_the_numbers(bombs_number_height, bombs_number_width, matrix):
 
 
 def creating_the_used_matrices_behind(bombs_number_height, bombs_number_width, bombs_number):
+    """
+    This function creates the matrices used behind of the game on the BE side. One of them, the solution matrix is used
+    to display the solution of the current game : placing the empty values, bombs then the non-empty safe cells, and the
+    matrix for the user that is full 0, this one will be used to display the current stage that the user is in during the
+    game
+
+
+    :param bombs_number_height: the number of rows of the matrix
+    :param bombs_number_width: the number of columns of the matrix
+    :param bombs_number: how many bombs are used for the current game
+    :return: the pair made of two matrices - the one for solution and the initialised one for the user (full 0)
+    """
     # initialising with zeros the matrix for solution (the block is empty)
     # also -2 for user (the block is by default unknown)
     matrix_solution = np.zeros([bombs_number_height, bombs_number_width], dtype=int)
@@ -45,6 +69,18 @@ def creating_the_used_matrices_behind(bombs_number_height, bombs_number_width, b
 
 
 def getting_empty_space_solution(matrix_solution, matrix_user, stack_zeros, row_len, col_len):
+    """
+    When the cell, that has the value 0 (is empty), is clicked then it shows every single neighbor that is also empty
+    recursively using the stack_zeros, and also shows the border that is formed with the neighbors of the empty spaces
+    that are not 0es nor bombs.
+
+    :param matrix_solution: the solution of the game, the one which was initialised before
+    :param matrix_user: the user's matrix, the matrix that has the current moves of the user
+    :param stack_zeros: the stack used to memorise the pairs made of columns and rows of a specific empty position
+    :param row_len: the number of rows of the matrix
+    :param col_len: the number of columns of the matrix
+    :return: nothing (void function)
+    """
     # not taking into consideration the initial clicked zone
 
     # if stack is 0 -> we found all cells that must be shown to the user
@@ -67,6 +103,15 @@ def getting_empty_space_solution(matrix_solution, matrix_user, stack_zeros, row_
 
 # changes the used method of finding the solution
 def change_is_bomb(is_bomb: bool, bomb, flag):
+    """
+    This function changes the variable used in the game for marking cells as flags or just revealing them, also changes
+    the colour of the buttons in function of which one is in use
+
+    :param is_bomb: a checker saying if the chosen button represent the one who has the name 'Bomb'
+    :param bomb: the label used for the button 'Bomb'
+    :param flag: the label used for the button 'Flag'
+    :return:
+    """
     global_variables_file.is_looking_for_bombs = is_bomb
 
     if is_bomb:

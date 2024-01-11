@@ -8,20 +8,45 @@ import classes_cell_and_minesweeper
 
 # functions for buttons
 def on_start():
+    """
+    clearing the widgets whenever we click on the back button (to go back to a specific window - usually menu one)
+    calls the function of the graphical part of the game
+
+    :return: nothing (void function)
+    """
     global_variables_file.clear_widgets()
     playing_game()
 
 
 def on_settings():
+    """
+    clearing the widgets whenever we click on the back button (to go back to a specific window - usually menu one)
+    calls the function of the graphical part of the settings
+
+    :return: nothing (void function)
+    """
     global_variables_file.clear_widgets()
     options()
 
 
 def on_exit():
+    """
+    destroys the root of the app
+
+    :return: nothing (void function)
+    """
     root.destroy()
 
 
 def back_on_menu():
+    """
+    clearing the widgets whenever we click on the back button (to go back to a specific window - usually menu one)
+    tells the thread to stop counting down because the player left the game (for not getting error when leaving a game
+    suddenly)
+    recreates the graphics of the menu
+
+    :return: nothing (void function)
+    """
     global_variables_file.clear_widgets()
     thread_time.left_the_game = True
     creating_the_menu()
@@ -29,6 +54,11 @@ def back_on_menu():
 
 # menu
 def creating_the_menu():
+    """
+    The graphical part of the menu and its buttons
+
+    :return: nothing (void function)
+    """
     # Add a label to the window
     button_start = tk.Button(root, text="Start", relief=tk.FLAT, cursor="hand2", command=on_start)
     button_settings = tk.Button(root, text="Settings", relief=tk.FLAT, cursor="hand2", command=on_settings)
@@ -41,12 +71,22 @@ def creating_the_menu():
 
 
 def main_prog():
+    """
+    To display the width and height of the windows of the application and calls the main menu function
+
+    :return: nothing (void function)
+    """
     global_variables_file.get_window_size()
     creating_the_menu()
 
 
 # settings
 def options():
+    """
+    It displays the GUI of the settings window
+
+    :return: nothing (void function)
+    """
     settings_label = tk.Label(root, text="SETTINGS")
     settings_label.grid(row=0, sticky="ew")
 
@@ -90,6 +130,12 @@ def options():
 
 # the game
 def playing_game():
+    """
+    This function is used to display the graphics of the game and also restores the variables every single time when
+    the game is replayed
+
+    :return: nothing (void function)
+    """
     # returning to default values used in the thread
     thread_time.left_the_game = False
     thread_time.winning_or_losing = 0

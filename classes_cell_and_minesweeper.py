@@ -8,6 +8,14 @@ import start_game
 class Cell:
     # class_attached_to = the main class that connects them as a matrix
     def __init__(self, root, row, column, class_attached_to):
+        """
+        Initialisation of the Cell class and creating the cell in the GUI
+
+        :param root: it is the root of the tkinter library
+        :param row: the position of the row in the matrix
+        :param column: the position of the column in the matrix
+        :param class_attached_to: the main class Minesweeper, for being able to call its functions easier
+        """
         self.root = root
         self.row = row
         self.column = column
@@ -20,6 +28,11 @@ class Cell:
 
     # when the cell is clicked
     def click(self):
+        """
+        It checks whenever the cell was clicked by the user and checks if the game was won after each click
+
+        :return: nothing (void function)
+        """
         if thread_time.winning_or_losing == 0:
             # we have the flag on
             if not global_variables_file.is_looking_for_bombs:
@@ -33,6 +46,12 @@ class Cell:
             self.class_attached_to.show_solution()
 
     def flag_function(self):
+        """
+        Modifies the attributes of the specific cell by modifying its colour and values in function of the fact that
+        it was clicked before or not with the flag on
+
+        :return: nothing (void function)
+        """
         # if the cell is already shown to the user
         if not self.is_revealed:
             # if it has a flag on
@@ -49,6 +68,12 @@ class Cell:
                 self.class_attached_to.user[self.row][self.column] = -1
 
     def bomb_function(self):
+        """
+        It checks if the current clicked cell is a bomb or not, if it is then ends the game, otherwise, reveals the cells
+        if an empty cell was clicked or the current value if the number is greater than 0
+
+        :return: nothing (void function)
+        """
         # we check if it has a flag!!
         if not self.flag:
             # we have a bomb
@@ -70,6 +95,13 @@ class Cell:
 
 class Minesweeper:
     def __init__(self, root, solution, user):
+        """
+        The initialisation of the class and the creation of each Cell visually
+
+        :param root: it is the root of the tkinter library
+        :param solution: the solution of the game, the one which was initialised before
+        :param user: the user's matrix, the matrix that has the current moves of the user
+        """
         self.root = root
         self.rows = global_variables_file.height
         self.cols = global_variables_file.width
@@ -80,6 +112,12 @@ class Minesweeper:
     # if the player won or lost
     @staticmethod
     def game_ended(condition: bool):
+        """
+        Just tells the thread if the user won or lost the game
+
+        :param condition: a variable to say if the game was won or lost
+        :return: nothing (void function)
+        """
         if condition:
             print("won the game")
             thread_time.winning_or_losing = 1
@@ -89,6 +127,14 @@ class Minesweeper:
 
     # calls the function to show neighbors in user matrix
     def showing_neighbors(self, row, col):
+        """
+        This function reveals the neighbours of the cell recursively (if they have 0 value) and also displays them
+        visually, not only the BE
+
+        :param row: the row of the specific cell
+        :param col: the column of the specific cell
+        :return: nothing (void function)
+        """
         start_game.getting_empty_space_solution(self.solution, self.user, [[row, col]], self.rows, self.cols)
         # then shows this graphically
         for row in self.cells:
@@ -99,6 +145,12 @@ class Minesweeper:
 
     # checks if the matrices are identical user & solution
     def check_winning_game(self):
+        """
+        this function checks if the matrices user matrix and solution matrix are equal to one another to tell the thread
+        if the player finished the game or not
+
+        :return: nothing (void function)
+        """
         is_finished = True
         for row in range(self.rows):
             for col in range(self.cols):
@@ -111,6 +163,13 @@ class Minesweeper:
 
     # showing the correct solution if the player loses
     def show_solution(self):
+        """
+        Whenever we lose the game (via clicking on a bomb or the time ended) this function will display the solution
+        in the GUI using the cells from the user matrix that are different to the solution matrix.
+        It uses light colours for catching the attention of the player and crosses via 'X' when the flag was put wrongly
+
+        :return: nothing (void function)
+        """
         for rows in self.cells:
             for cell in rows:
                 row = cell.row

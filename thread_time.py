@@ -18,6 +18,13 @@ winning_or_losing = 0
 
 # used when we close the window via X button in the top right corner
 def on_close(root):
+    """
+    Here it is called the following protocol which says, when we close the window suddenly, the GUI will just
+    destroy its root for the lack of errors and assures the game that the window was closed via the variable still_exist
+
+    :param root: it is the root of the tkinter library
+    :return: nothing (void function)
+    """
     global still_exist
     still_exist = False
     root.destroy()
@@ -25,6 +32,14 @@ def on_close(root):
 
 # counting the time -> chronometer
 def counting_down_time(used_label):
+    """
+    This function makes the chronometer counting down the time you have left to finish the game. The global variables
+    help us with the number of seconds we have and the other one is like a verifier of telling the player if it won or
+    lost, by modifying the label of the chronometer with a simple message in function of the result of the game
+
+    :param used_label: the label where the chronometer will be placed to
+    :return: nothing (void function)
+    """
     global time_seconds_for_this_game, winning_or_losing
     time_seconds_for_this_game = global_variables_file.time_seconds
     while time_seconds_for_this_game > 0 and still_exist and not left_the_game and winning_or_losing == 0:
@@ -42,6 +57,13 @@ def counting_down_time(used_label):
 
 # the function that creates the thread and calls it
 def calling_the_thread_for_time(used_label, root):
+    """
+    This function is used to separate the thread implementation and protocol creation from the logic of the thread
+
+    :param used_label: the label where the chronometer will be placed to
+    :param root: it is the root of the tkinter library
+    :return: nothing (void function)
+    """
     thread = threading.Thread(target=lambda: counting_down_time(used_label))
     thread.start()
     root.protocol("WM_DELETE_WINDOW", lambda: on_close(root))
@@ -49,6 +71,12 @@ def calling_the_thread_for_time(used_label, root):
 
 # to convert the seconds into minutes & seconds: chronometer model
 def show_current_time(variable_time):
+    """
+    We use the variable_time to format it, so we will have the following pattern: [min:sec]
+
+    :param variable_time: the variable for time that represents the number of seconds for the chronometer
+    :return: returns the string of the formatted variable
+    """
     minutes = variable_time // 60
     seconds = variable_time % 60
     if seconds < 10:
